@@ -18,7 +18,8 @@ class BATTLE_TANKS_API ATankPlayerController : public APlayerController
 public:
 	ATank* GetControlledTank() const;
 	
-	
+	//Overwrite the begin play from parent (AActor) - can be overridden as parent has it as virtual void 
+	void BeginPlay() override;
 	
 	
 };
