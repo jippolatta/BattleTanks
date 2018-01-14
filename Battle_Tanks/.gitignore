@@ -76,3 +76,6 @@ DerivedDataCache/*
 
 #UE Starter Content
 Content/StarterContent/*
+
+#UI images
+Content/UI/Images/*
