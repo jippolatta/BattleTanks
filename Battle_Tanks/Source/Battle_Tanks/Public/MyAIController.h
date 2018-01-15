@@ -15,10 +15,14 @@ class BATTLE_TANKS_API AMyAIController : public AAIController
 {
 	GENERATED_BODY()
 	
-public:
+private:
 	virtual void BeginPlay() override;
 
-	ATank* GetControlledTank();
+	//Get the tank that the AI is controlling
+	ATank* GetControlledTank() const;
+
+	//Get the tank that the player is controlling
+	ATank* GetPlayerTank() const;
 	
 	
 };
