@@ -19,6 +19,19 @@ void ATankPlayerController::BeginPlay()
 	}
 }
 
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	AimTowardsCrosshair()
+}
+
+
+void ATankPlayerController::AimTowardsCrosshair()
+{
+	//Get out if there is no controlled tank
+	if (!GetControlledTank()) { return; }
+}
+
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	//Cast to ATank and get the pawn - should return the tank that is being possesed

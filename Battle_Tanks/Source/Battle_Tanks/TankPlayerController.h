@@ -20,6 +20,12 @@ public:
 	
 	//Overwrite the begin play from parent (AActor) - can be overridden as parent has it as virtual void 
 	void BeginPlay() override;
+
+	//Tick
+	virtual void Tick(float DeltaTime) override;
+
+	//Aim towards the onscreen crosshair/aim reticle
+	void AimTowardsCrosshair();
 	
 	
 };
