@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Engine/World.h"
 
 void ATankPlayerController::BeginPlay()
 {
@@ -38,7 +39,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	//Only passing a reference to HitLocation, not actually HitLocation
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *HitLocation.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *HitLocation.ToString());
 	}
 	
 }
@@ -59,10 +60,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Look Directions: %s"), *LookDirection.ToString() );
+		GetLookVectorHitLocation(LookDirection, OutHitLocation);
 	}
 
-	//Line-trace along that look direction, and see what we hit(up to max range)
+	
 
 
 	return true;
@@ -75,6 +76,32 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 	FVector CameraWorldLocation;
 	//Return whether the method worked
 	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection);
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const
+{
+	//Hit result variable. Outputs what the trace hits(if anything)
+	FHitResult HitResult;
+	//Start the cast at the location of our camera
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	//End the cast at the LineTraceRange in the look direction
+	auto EndLocation = StartLocation + (LookDirection * LineTraceReach);
+
+	//Line trace that will hit anything visible(does not hit skybox)
+	if (GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		StartLocation,
+		EndLocation,
+		ECollisionChannel::ECC_Visibility)
+		)
+	{
+		//Return saying that we hit something and where that something is
+		OutHitLocation = HitResult.Location;
+		return true;
+	}
+	//Else, we must not of hit anything
+	OutHitLocation = FVector(0);
+	return false;
 }
 
 ATank* ATankPlayerController::GetControlledTank() const

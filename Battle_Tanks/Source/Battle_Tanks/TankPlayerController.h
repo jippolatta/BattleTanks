@@ -38,6 +38,14 @@ private:
 	//Get the look direction. Returns true if it worked. Outputs the LookDirection
 	//Const becuase getting the direction should not change any variables
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
+
+	//Get the location that are ray cast hits up to a max distance
+	//Returns true if we hit something. Also returns that HitLocation
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
+
+	//How far the line trace can reach. Defaults to 10km (10 000 00)
+	UPROPERTY(EditAnywhere)
+		float LineTraceReach = 1000000;
 	
 
 protected:
