@@ -24,8 +24,22 @@ public:
 	//Tick
 	virtual void Tick(float DeltaTime) override;
 
+	
+
+private:
+	//Return an out parameter, true if hit landscape
+	//Passes a reference of the FVector - it is how out parameters work
+	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+
 	//Aim towards the onscreen crosshair/aim reticle
 	void AimTowardsCrosshair();
+
+	UPROPERTY(EditAnywhere)
+		float CrosshairXLocation = 0.5;
+
+	UPROPERTY(EditAnywhere)
+		float CrosshairYLocation = .3333;
+
 	
 	
 };
