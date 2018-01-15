@@ -24,6 +24,7 @@ public:
 	//Tick
 	virtual void Tick(float DeltaTime) override;
 
+
 	
 
 private:
@@ -34,10 +35,16 @@ private:
 	//Aim towards the onscreen crosshair/aim reticle
 	void AimTowardsCrosshair();
 
-	UPROPERTY(EditAnywhere)
+	//Get the look direction. Returns true if it worked. Outputs the LookDirection
+	//Const becuase getting the direction should not change any variables
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
+	
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AimReticle)
 		float CrosshairXLocation = 0.5;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AimReticle)
 		float CrosshairYLocation = .3333;
 
 	
