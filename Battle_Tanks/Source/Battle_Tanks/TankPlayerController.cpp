@@ -8,8 +8,9 @@ void ATankPlayerController::BeginPlay()
 	//Run the parent's begin play
 	Super::BeginPlay();
 	
-
+	
 	auto ControlledTank = GetControlledTank();
+	//Check to make sure we have a controlled tank
 	if (!ControlledTank)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Player Controller not possesing a tank"));
@@ -23,6 +24,7 @@ void ATankPlayerController::BeginPlay()
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//Aim the tank at the crosshair on the player screen
 	AimTowardsCrosshair();
 }
 
@@ -34,12 +36,12 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	//Out parameter
 	FVector HitLocation; 
-	//Side effect - ray trace
 	//Checking to see if we are going to hit the landscape
 	//Only passing a reference to HitLocation, not actually HitLocation
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *HitLocation.ToString());
+		//Aim at the hit location in the controlled tank(tank controlled by player)
+		GetControlledTank()->AimAt(HitLocation);
 	}
 	
 }
@@ -54,9 +56,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
 
+	//Get the location of the crosshair on the screen according the the x and y screen size
 	auto ScreenLocation = FVector2D(ViewportSizeX * CrosshairXLocation, ViewportSizeY * CrosshairYLocation); //Eg if x is 1000 wide then half way across is 1000*.5
 	
-	//Get the look direction
+	//Get the look direction. Look direction is an out variable
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
@@ -70,17 +73,21 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 }
 
 //"De-project" the screen position of the crosshair to a world direction
+//Basically, finds the direction the player is looking based off of the crosshair
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
 {
 	//Discarded but must be passed in
 	FVector CameraWorldLocation;
-	//Return whether the method worked
-	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, LookDirection);
+	//Returns true if it finds a direction. Also returns the LookDirection
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, 
+		ScreenLocation.Y, 
+		CameraWorldLocation,
+		LookDirection);
 }
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const
 {
-	//Hit result variable. Outputs what the trace hits(if anything)
+	//Hit result variable. Output for what the trace hits(if anything)
 	FHitResult HitResult;
 	//Start the cast at the location of our camera
 	auto StartLocation = PlayerCameraManager->GetCameraLocation();
@@ -88,6 +95,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	auto EndLocation = StartLocation + (LookDirection * LineTraceReach);
 
 	//Line trace that will hit anything visible(does not hit skybox)
+	//If the line trace hits something that is visible then set the OutHitLocation return to be the location of the thing that was hit
 	if (GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		StartLocation,
