@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "TankAimingComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
@@ -10,6 +11,8 @@ UCLASS()
 class BATTLE_TANKS_API ATank : public APawn
 {
 	GENERATED_BODY()
+
+
 
 public:
 	// Sets default values for this pawn's properties
@@ -24,9 +27,17 @@ public:
 	//The location that we want the tank to aim at
 	void AimAt(FVector HitLocation);
 
+	//Set the barrel reference is the aiming component
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+
 private:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+protected:
+	//Reference to the tank aiming component
+	UTankAimingComponent * TankAimingComponent = nullptr;
 
 	
 	

@@ -36,10 +36,10 @@ private:
 	void AimTowardsCrosshair();
 
 	//Get the look direction. Returns true if it worked. Outputs the LookDirection
-	//Const becuase getting the direction should not change any variables
+	//Const because getting the direction should not change any variables
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
 
-	//Get the location that are ray cast hits up to a max distance
+	//Get the location that our ray cast hits up to a max distance
 	//Returns true if we hit something. Also returns that HitLocation
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
 
