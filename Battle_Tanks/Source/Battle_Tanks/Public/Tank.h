@@ -9,6 +9,7 @@
 ///Forward Declerations
 class UTankAimingComponent;
 class UTankBarrel;
+class UTankTurret;
 
 UCLASS()
 class BATTLE_TANKS_API ATank : public APawn
@@ -27,10 +28,13 @@ public:
 	//The location that we want the tank to aim at
 	void AimAt(FVector HitLocation);
 
-	//Set the barrel reference is the aiming component
+	//Set the barrel reference in the aiming component
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
+	//Set the reference to the turret in the TankAimingComponent
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTankTurret* TurretToSet);
 
 
 private:	

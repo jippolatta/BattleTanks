@@ -8,6 +8,7 @@
 
 //Forward decleration
 class UTankBarrel;
+class UTankTurret;
 
 //Holds barrel's properties and Elevate method
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -22,6 +23,9 @@ public:
 	//Set the reference to the Barrel
 	void SetBarrelRefernce(UTankBarrel* BarrelToSet);
 
+	//Set the reference to the turret
+	void SetTurretReference(UTankTurret* TurretToSet);
+
 	//Tell the tank to aim at HitLocation
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
@@ -31,6 +35,9 @@ public:
 private:
 	//Reference to the barrel
 	UTankBarrel * Barrel = nullptr;
+
+	//Reference to the turret
+	UTankTurret* Turret = nullptr;
 
 	//Method to move the barrel component of the tank
 	void MoveBarrelTowards(FVector AimDirection);
