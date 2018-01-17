@@ -31,9 +31,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
 
+
+
 private:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	//Set the launch speed of the projectile
+	UPROPERTY(EditAnywhere, Category = Firing)
+		//TODO Find sensible default
+		float LaunchSpeed = 100000;
 
 protected:
 	//Reference to the tank aiming component

@@ -20,7 +20,7 @@ public:
 	void SetBarrelRefernce(UStaticMeshComponent* BarrelToSet);
 
 	//Tell the tank to aim at HitLocation
-	void AimAt(FVector HitLocation);
+	void AimAt(FVector HitLocation, float LaunchSpeed);
 
 protected:
 	// Called when the game starts
