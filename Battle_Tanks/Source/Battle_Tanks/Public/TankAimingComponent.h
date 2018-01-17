@@ -22,17 +22,15 @@ public:
 	//Tell the tank to aim at HitLocation
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	//TODO add set turret reference
+
 
 private:
 	//Reference to the barrel
 	UStaticMeshComponent * Barrel = nullptr;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	//Method to move the barrel component of the tank
+	void MoveBarrelTowards(FVector AimDirection);
 
 
 		
